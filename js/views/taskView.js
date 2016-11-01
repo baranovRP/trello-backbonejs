@@ -2,7 +2,6 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-import jQuery from 'jquery';
 import $ from 'jquery';
 import sortable from 'jquery-ui-bundle';
 import _ from 'underscore';

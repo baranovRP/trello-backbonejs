@@ -7,15 +7,11 @@ import sortable from 'jquery-ui-bundle';
 import _ from 'underscore';
 import Backbone from 'backbone';
 
-import Task from '../models/task';
+import CatalogCollection from '../collections/catalogCollection';
 
-export default class TaskCollection extends Backbone.Collection {
+export default class Board extends Backbone.Model {
 
-  initialize() {
-    this.model = Task;
+  default() {
+    this.catalogs = new CatalogCollection();
   }
 }
-
-// TaskCollection.nextOrder = function nextOrder() {
-//   return this.last().get('order') + 1;
-// };

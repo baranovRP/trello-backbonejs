@@ -9,12 +9,12 @@ import Backbone from 'backbone';
 
 import Task from './models/task';
 import Catalog from './models/catalog';
-// import Board from './models/board';
+import Board from './models/board';
 
 import TaskCollection from './collections/taskCollection';
 import CatalogCollection from './collections/catalogCollection';
 
-import AppView from './views/appView';
+import BoardView from './views/boardView';
 
 const task1 = new Task({
   name: 'task1',
@@ -72,8 +72,9 @@ const done = new Catalog({
 
 const catalogs = new CatalogCollection([todo, inProgress, done]);
 
-new AppView({
+new BoardView({
   collection: catalogs,
+  model: Board,
   el: document.querySelector('board'),
 });
 

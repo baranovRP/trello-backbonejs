@@ -2,7 +2,6 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-import jQuery from 'jquery';
 import $ from 'jquery';
 import sortable from 'jquery-ui-bundle';
 import _ from 'underscore';
@@ -10,13 +9,17 @@ import Backbone from 'backbone';
 
 import CatalogView from '../views/catalogView';
 
-export default class AppView extends Backbone.View {
+export default class BoardView extends Backbone.View {
 
-  initialize() {
-    this.events = {
-      'click': 'taskCreated',
-    };
-
+  constructor(config) {
+    super(Object.assign(
+      {
+        events: {
+          click: 'taskCreated',
+        },
+      },
+      config
+    ));
     this.render();
   }
 
@@ -53,12 +56,25 @@ export default class AppView extends Backbone.View {
     if (!e.target.classList.contains('add-form_button')) {
       return;
     }
-    const name = this.$el($('.add-form_name')).value;
-    const description = this.$el($('.add-form_description')).value;
+    const name = this.$el.find($('.add-form_name')).val();
+    const description = this.$el.find($('.add-form_description')).val();
     if (name === '') {
       return;
     }
 
-    // self.onTaskCreated({ name, description });
+    this.collection.forEach((item) => {
+      const status = item.attributes.title;
+      if (status !== 'todo') {
+        return;
+      }
+      const order = item.attributes.tasks.length;
+      item.attributes.tasks.add({
+        name,
+        description,
+        status,
+        order,
+      });
+    });
+    // this.collection = [...this.collection];
   }
 }
