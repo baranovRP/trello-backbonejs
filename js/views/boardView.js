@@ -44,7 +44,10 @@ export default class BoardView extends Backbone.View {
         const h2 = document.createElement('h2');
         h2.textContent = item.attributes.title;
         li.appendChild(h2);
-        const view = new CatalogView({ model: item });
+        const view = new CatalogView({
+          model: item,
+          collection: item.attributes.tasks
+        });
         li.appendChild(view.render());
         return li;
       })
@@ -75,6 +78,5 @@ export default class BoardView extends Backbone.View {
         order,
       });
     });
-    // this.collection = [...this.collection];
   }
 }

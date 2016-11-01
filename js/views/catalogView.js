@@ -18,7 +18,7 @@ export default class CatalogView extends Backbone.View {
       },
       config
     ));
-    this.model.collection.on('update', () => this.render());
+    this.collection.on('update', () => this.render());
   }
 
   render() {
