@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>trello-backbonejs</title>
+  <script src="dist/js/main.js" defer async></script>
+  <style>
+    board {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+    }
+
+    .add-form {
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+      margin: auto;
+      margin-bottom: 40px;
+    }
+
+    .catalogs {
+      display: flex;
+      flex-direction: row;
+      align-self: center;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .catalog {
+      width: 200px;
+      display: block;
+      background-color: #669999;
+      padding: 0;
+      margin: 0;
+      margin-right: 20px;
+    }
+
+    .catalog:last-child {
+      margin-right: 0;
+    }
+
+    .catalog h2 {
+      text-align: center;
+      background-color: #407f7f;
+    }
+
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .task {
+      display: block;
+      position: relative;
+      width: 200px;
+      padding: 0;
+      margin: 0;
+      margin-bottom: 5px;
+      background-color: #0d4d4d;
+    }
+
+    .task:last-child {
+      margin-bottom: 0;
+    }
+
+    .task-placeholder {
+      display: block;
+      position: relative;
+      width: 200px;
+      height: 100px;
+      background-color: #d49a6a;
+    }
+
+    .card {
+      padding: 30px;
+    }
+
+    .card_title {
+      text-align: center;
+      margin: 5px;
+      padding: 0;
+    }
+
+    .card_state {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card_status {
+      display: block;
+      font-family: cursive;
+      font-size: 13px;
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      color: #ef3e4a;
+    }
+
+    .card_order {
+      display: block;
+      background-color: #d49a6a;
+      padding: 5px 10px 5px 10px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+    }
+
+    .btn {
+      background: #003333;
+      color: #ffffff;
+      text-decoration: none;
+      border: none;
+      padding: 5px;
+    }
+
+    .btn:hover {
+      background: #004444;
+      text-decoration: none;
+    }
+
+    .btn:disabled {
+      background-color: #0d4d4d;
+      color: #778899;
+      border: 1px #003333;
+    }
+
+    .btn--up {
+      position: absolute;
+      top: 0;
+      left: 50%;
+    }
+
+    .btn--right {
+      position: absolute;
+      top: 40%;
+      right: 0;
+    }
+
+    .btn--down {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+    }
+
+    .btn--left {
+      position: absolute;
+      top: 40%;
+      left: 0;
+    }
+
+    .btn--del {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+<board></board>
+</body>
+</html>
