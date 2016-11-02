@@ -15,7 +15,12 @@ export default class BoardView extends Backbone.View {
     super(Object.assign(
       {
         events: {
-          click: 'taskCreated',
+          click: 'onTaskCreated',
+          'task-remove': 'onTaskRemoved',
+          'task-move-up': 'onTaskMoveUp',
+          'task-move-down': 'onTaskMoveDown',
+          'task-move-right': 'onTaskMoveRight',
+          'task-move-left': 'onTaskMoveLeft',
         },
       },
       config
@@ -46,7 +51,7 @@ export default class BoardView extends Backbone.View {
         li.appendChild(h2);
         const view = new CatalogView({
           model: item,
-          collection: item.attributes.tasks
+          collection: item.attributes.tasks,
         });
         li.appendChild(view.render());
         return li;
@@ -55,7 +60,7 @@ export default class BoardView extends Backbone.View {
     this.$el.append(ul);
   }
 
-  taskCreated(e) {
+  onTaskCreated(e) {
     if (!e.target.classList.contains('add-form_button')) {
       return;
     }
@@ -78,5 +83,32 @@ export default class BoardView extends Backbone.View {
         order,
       });
     });
+  }
+
+  onTaskRemoved(e) {
+    const catalogTitle = e.detail.task.model.attributes.status;
+    this.collection.forEach((item) => {
+      const status = item.attributes.title;
+      if (status !== catalogTitle) {
+        return;
+      }
+      item.attributes.tasks.remove(e.detail.task.model);
+    });
+  }
+
+  onTaskMoveUp(e) {
+    console.log(e.detail.task);
+  }
+
+  onTaskMoveDown(e) {
+    console.log(e.detail.task);
+  }
+
+  onTaskMoveRight(e) {
+    console.log(e.detail.task);
+  }
+
+  onTaskMoveLeft(e) {
+    console.log(e.detail.task);
   }
 }

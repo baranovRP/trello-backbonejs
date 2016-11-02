@@ -23,5 +23,6 @@ export default class Task extends Backbone.Model {
     if (!this.get('name')) {
       this.set({ name: this.defaults().name });
     }
+    // this.set({order: TaskCollection.nextOrder()});
   }
 }

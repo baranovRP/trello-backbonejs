@@ -15,4 +15,14 @@ export default class Catalog extends Backbone.Model {
     this.title = '';
     this.tasks = new TaskCollection();
   }
+
+  updateStatuses() {
+    this.attributes.tasks.forEach((item, idx) => {
+      item.set({ order: idx });
+    });
+  }
+
+  // nextOrder() {
+  //   return this.attributes.tasks.length - 1;
+  // }
 }

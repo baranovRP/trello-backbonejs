@@ -31,7 +31,10 @@ export default class CatalogView extends Backbone.View {
       tasks.map((item) => {
         const li = document.createElement('li');
         $(li).addClass('task');
-        const view = new TaskView({ model: item });
+        item.collection.forEach((i, idx) => {
+          i.set({ order: idx });
+        });
+        const view = new TaskView({ model: item, collection: item.collection });
         $(li).append(view.render());
         return li;
       })

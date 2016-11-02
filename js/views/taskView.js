@@ -9,6 +9,47 @@ import Backbone from 'backbone';
 
 export default class TaskView extends Backbone.View {
 
+  constructor(config) {
+    super(Object.assign(
+      {},
+      config
+    ));
+    const self = this;
+    this.el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('btn--del')) {
+        self.el.dispatchEvent(new CustomEvent('task-remove', {
+          detail: { task: self },
+          bubbles: true,
+          composed: true,
+        }));
+      } else if (e.target.classList.contains('btn--up')) {
+        self.el.dispatchEvent(new CustomEvent('task-move-up', {
+          detail: { task: self },
+          bubbles: true,
+          composed: true,
+        }));
+      } else if (e.target.classList.contains('btn--down')) {
+        self.el.dispatchEvent(new CustomEvent('task-move-down', {
+          detail: { task: self },
+          bubbles: true,
+          composed: true,
+        }));
+      } else if (e.target.classList.contains('btn--right')) {
+        self.el.dispatchEvent(new CustomEvent('task-move-right', {
+          detail: { task: self },
+          bubbles: true,
+          composed: true,
+        }));
+      } else if (e.target.classList.contains('btn--left')) {
+        self.el.dispatchEvent(new CustomEvent('task-move-left', {
+          detail: { task: self },
+          bubbles: true,
+          composed: true,
+        }));
+      }
+    });
+  }
+
   initialize() {
     this.tagName = 'div';
   }
