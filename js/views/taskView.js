@@ -48,6 +48,8 @@ export default class TaskView extends Backbone.View {
         }));
       }
     });
+    this.collection.on('update', () => this.render());
+    this.model.on('change', () => this.render());
   }
 
   initialize() {

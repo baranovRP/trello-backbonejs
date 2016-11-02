@@ -19,6 +19,7 @@ export default class CatalogView extends Backbone.View {
       config
     ));
     this.collection.on('update', () => this.render());
+    this.model.on('change', () => this.render());
   }
 
   render() {
@@ -31,9 +32,9 @@ export default class CatalogView extends Backbone.View {
       tasks.map((item) => {
         const li = document.createElement('li');
         $(li).addClass('task');
-        item.collection.forEach((i, idx) => {
-          i.set({ order: idx });
-        });
+        // item.collection.forEach((i, idx) => {
+        //   i.set({ order: idx });
+        // });
         const view = new TaskView({ model: item, collection: item.collection });
         $(li).append(view.render());
         return li;
