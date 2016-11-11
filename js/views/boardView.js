@@ -7,10 +7,10 @@ import sortable from 'jquery-ui-bundle';
 import _ from 'underscore';
 import Backbone from 'backbone';
 
-import TaskCollection from '../collections/taskCollection';
+import Task from '../models/task';
 import CatalogView from '../views/catalogView';
 
-const MOVE = {
+export const MOVE = {
   UP: -1,
   RIGHT: -1,
   DOWN: 1,
@@ -19,34 +19,25 @@ const MOVE = {
 
 export default class BoardView extends Backbone.View {
 
-
-  constructor(config) {
+  constructor(options) {
     super(Object.assign(
       {
         events: {
-          click: 'onTaskCreated',
-          'task-remove': 'onTaskRemoved',
-          'task-move-up': 'onTaskMoveUp',
-          'task-move-down': 'onTaskMoveDown',
-          'task-move-right': 'onTaskMoveRight',
-          'task-move-left': 'onTaskMoveLeft',
+          moveTaskRight: 'moveTaskRight',
+          moveTaskLeft: 'moveTaskLeft',
+          'click .add-form_button': 'createTask',
         },
       },
-      config
+      options
     ));
+
+    this.addFormTemplate = _.template($('#add-form-template').html());
     this.render();
   }
 
   render() {
-    this.el.innerHTML = '';
-    const div = document.createElement('div');
-    div.classList.add('add-form');
-
-    div.innerHTML = `
-      <input class="add-form_name" type="text" placeholder="add todo" name="todo-name">
-      <textarea class="add-form_description" placeholder="add description" name="description"></textarea>
-      <button class="add-form_button">Добавить</button>`;
-    this.el.appendChild(div);
+    this.$el.empty();
+    this.$el.html(this.addFormTemplate());
 
     const [...catalogs] = this.collection.models;
     const ul = document.createElement('ul');
@@ -62,86 +53,54 @@ export default class BoardView extends Backbone.View {
           model: item,
           collection: item.attributes.tasks,
         });
-        li.appendChild(view.render());
+        li.appendChild(view.render().el);
         return li;
       })
     );
     this.$el.append(ul);
   }
 
-  onTaskCreated(e) {
-    if (!e.target.classList.contains('add-form_button')) {
-      return;
-    }
+  createTask() {
     const name = this.$el.find($('.add-form_name')).val();
     const description = this.$el.find($('.add-form_description')).val();
     if (name === '') {
       return;
     }
-
-    this.collection.forEach((item) => {
-      const status = item.attributes.title;
-      if (status !== 'todo') {
-        return;
-      }
-      const order = item.attributes.tasks.length;
-      item.attributes.tasks.add({
-        name,
-        description,
-        status,
-        order,
-      });
+    const todo = this.collection.findWhere({ title: 'todo' });
+    todo.attributes.tasks.add({
+      name,
+      description,
+      status: todo.attributes.title,
+      order: todo.attributes.tasks.nextOrder(),
     });
+    this.clearInputFields();
   }
 
-  onTaskRemoved(e) {
-    const catalogTitle = e.detail.task.model.attributes.status;
-    this.collection.forEach((item) => {
-      const status = item.attributes.title;
-      if (status !== catalogTitle) {
-        return;
-      }
-      item.attributes.tasks.remove(e.detail.task.model);
-      const arr = item.attributes.tasks.toArray();
-      arr.forEach((i, idx) => {
-        i.set({ order: idx });
-      });
-      item.set({ tasks: new TaskCollection(arr) });
-    });
+  clearInputFields() {
+    this.$el.find($('.add-form_name')).val('');
+    this.$el.find($('.add-form_description')).val('');
   }
 
-  onTaskMoveUp(e) {
-    this.moveTaskVert(e.detail.task, this.collection, MOVE.UP);
+  moveTaskRight(e) {
+    const taskModel = e.detail.task.model;
+    this.moveTaskHoriz(taskModel, this.collection, MOVE.RIGHT);
   }
 
-  onTaskMoveDown(e) {
-    this.moveTaskVert(e.detail.task, this.collection, MOVE.DOWN);
+  moveTaskLeft(e) {
+    const taskModel = e.detail.task.model;
+    this.moveTaskHoriz(taskModel, this.collection, MOVE.LEFT);
   }
 
-  onTaskMoveRight(e) {
-    console.log(e.detail.task.model);
-  }
-
-  onTaskMoveLeft(e) {
-    console.log(e.detail.task.model);
-  }
-
-  moveTaskVert(t, catalogs, direction) {
-    const task = t.model;
-    const currentOrder = task.attributes.order;
-
-    const catalogTitle = task.attributes.status;
-    catalogs.forEach((item) => {
-      const status = item.attributes.title;
-      if (status !== catalogTitle) {
-        return;
-      }
-      const arr = item.attributes.tasks.toArray();
-      [arr[currentOrder], arr[currentOrder + direction]] = [arr[currentOrder + direction], arr[currentOrder]];
-      arr.forEach((i, idx) => {
-        i.set({ order: idx });
-      });
-      item.set({ tasks: new TaskCollection([...arr]) });
-    });
+  moveTaskHoriz(taskModel, catalogs, direction) {
+    const task = new Task(Object.assign({}, taskModel.attributes));
+    const prevCatalog = catalogs.findWhere({ title: taskModel.get('status') });
+    const nextCatalogIdx = catalogs.findIndex(prevCatalog) - direction;
+    if (nextCatalogIdx < 0 || nextCatalogIdx > (catalogs.length - 1)) {
+      return;
+    }
+    const nextCatalog = catalogs.at(nextCatalogIdx);
+    taskModel.destroy();
+    task.set({ status: nextCatalog.get('title') });
+    nextCatalog.attributes.tasks.add(task);
   }
 }
