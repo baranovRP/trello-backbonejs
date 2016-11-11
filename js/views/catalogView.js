@@ -23,6 +23,7 @@ export default class CatalogView extends Backbone.View {
           moveTaskDown: 'moveTaskDown',
           sortremove: 'sortTaskRemove',
           sortreceive: 'sortTaskReceive',
+          sortupdate: 'sortTaskUpdate',
         },
       },
       options
@@ -76,6 +77,9 @@ export default class CatalogView extends Backbone.View {
   }
 
   sortTaskReceive(event, ui) {
+    this.updateCatalogFromDOM(event.target);
+  }
+  sortTaskUpdate(event, ui) {
     this.updateCatalogFromDOM(event.target);
   }
 
