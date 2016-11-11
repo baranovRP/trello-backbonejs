@@ -65,10 +65,11 @@ const done = new Catalog({
   title: 'done',
 });
 
-const catalogs = new CatalogCollection([todo, inProgress, done]);
+const allCatalogs = new CatalogCollection([todo, inProgress, done]);
+const board = new Board({ catalogs: allCatalogs });
 
 new BoardView({
-  collection: catalogs,
-  model: Board,
+  collection: allCatalogs,
+  model: board,
   el: document.querySelector('board'),
 });
