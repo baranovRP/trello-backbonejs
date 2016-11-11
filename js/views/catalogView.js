@@ -17,13 +17,10 @@ export default class CatalogView extends Backbone.View {
       {
         tagName: 'ul',
         className: `tasks  tasks--${options.model.get('title')}`,
-        id: `sortable-${options.model.get('title')}`,
+        id: `${options.model.get('title')}`,
         events: {
           moveTaskUp: 'moveTaskUp',
           moveTaskDown: 'moveTaskDown',
-          sortremove: 'sortTaskRemove',
-          sortreceive: 'sortTaskReceive',
-          sortupdate: 'sortTaskUpdate',
         },
       },
       options
@@ -70,30 +67,5 @@ export default class CatalogView extends Backbone.View {
     const other = tasks.at(newIdx);
     tasks.at(currIdx).set({ name: other.get('name'), description: other.get('description') });
     tasks.at(newIdx).set({ name: task.get('name'), description: task.get('description') });
-  }
-
-  sortTaskRemove(event, ui) {
-    this.updateCatalogFromDOM(event.target);
-  }
-
-  sortTaskReceive(event, ui) {
-    this.updateCatalogFromDOM(event.target);
-  }
-  sortTaskUpdate(event, ui) {
-    this.updateCatalogFromDOM(event.target);
-  }
-
-  updateCatalogFromDOM(node) {
-    const newCardEls = [...node.querySelectorAll('.card')];
-    const newCards = newCardEls.map((item, idx) => {
-      return new Task({
-        name: item.querySelector('.card_title').innerText,
-        description: item.querySelector('.card_description').innerText,
-        status: this.model.get('title'),
-        order: idx,
-      });
-    });
-    this.collection.reset(newCards);
-    this.render();
   }
 }
