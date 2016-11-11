@@ -167,5 +167,27 @@
 </head>
 <body>
 <board></board>
+<script type="text/template" id="task-template">
+    <div class="card">
+      <h3 class="card_title"><%- name %></h3>
+      <div class="card_description"><%- description %></div>
+      <div class="card_state">
+        <span class="card_status"><%- status %></span>
+        <span class="card_order"><%- order %></span>
+      </div>
+      <button class="btn  btn--up">⇑</button>
+      <button class="btn  btn--right">⇒</button>
+      <button class="btn  btn--down">⇓</button>
+      <button class="btn  btn--left">⇐</button>
+      <button class="btn  btn--del">x</button>
+    </div>
+</script>
+<script type="text/template" id="add-form-template">
+  <div class="add-form">
+    <input class="add-form_name" type="text" placeholder="add todo" name="todo-name">
+    <textarea class="add-form_description" placeholder="add description" name="description"></textarea>
+    <button class="add-form_button">Добавить</button>
+  </div>
+</script>
 </body>
 </html>
