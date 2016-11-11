@@ -2,20 +2,28 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-import $ from 'jquery';
-import sortable from 'jquery-ui-bundle';
-import _ from 'underscore';
 import Backbone from 'backbone';
 
 import Task from '../models/task';
 
 export default class TaskCollection extends Backbone.Collection {
 
-  initialize() {
+  constructor(options) {
+    super(options);
     this.model = Task;
   }
-}
 
-// TaskCollection.nextOrder = function nextOrder() {
-//   return this.last().get('order') + 1;
-// };
+  nextOrder() {
+    if (!this.length) {
+      return 1;
+    }
+
+    return this.last().get('order') + 1;
+  }
+
+  updateOrder() {
+    this.forEach((item, idx) => {
+      item.set({ order: idx });
+    });
+  }
+}
