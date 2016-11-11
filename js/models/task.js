@@ -23,7 +23,7 @@ export default class Task extends Backbone.Model {
       console.log(error);
     });
     this.on('change', () => {
-      console.log(`values for ${JSON.stringify(this.attributes)} are changed`);
+      // console.log(`values for ${JSON.stringify(this.attributes)} are changed`);
     });
   }
 }
