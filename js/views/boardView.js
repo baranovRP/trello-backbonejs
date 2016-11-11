@@ -3,7 +3,6 @@
 /* eslint-env browser */
 
 import $ from 'jquery';
-import sortable from 'jquery-ui-bundle';
 import _ from 'underscore';
 import Backbone from 'backbone';
 

@@ -2,12 +2,12 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-import sortable from 'jquery-ui-bundle';
+import $ from 'jquery';
+import { sortable } from 'jquery-ui-bundle';
 import Backbone from 'backbone';
 
 import Task from '../models/task';
 import TaskView from '../views/taskView';
-
 import { MOVE } from '../views/boardView';
 
 export default class CatalogView extends Backbone.View {
@@ -21,6 +21,8 @@ export default class CatalogView extends Backbone.View {
         events: {
           moveTaskUp: 'moveTaskUp',
           moveTaskDown: 'moveTaskDown',
+          sortremove: 'sortTaskRemove',
+          sortreceive: 'sortTaskReceive',
         },
       },
       options
@@ -39,7 +41,11 @@ export default class CatalogView extends Backbone.View {
         return view.render().el;
       })
     );
-
+    $(this.el).sortable({
+      placeholder: 'task-placeholder',
+      connectWith: '.tasks',
+      dropOnEmpty: true,
+    });
     return this;
   }
 
@@ -63,5 +69,27 @@ export default class CatalogView extends Backbone.View {
     const other = tasks.at(newIdx);
     tasks.at(currIdx).set({ name: other.get('name'), description: other.get('description') });
     tasks.at(newIdx).set({ name: task.get('name'), description: task.get('description') });
+  }
+
+  sortTaskRemove(event, ui) {
+    this.updateCatalogFromDOM(event.target);
+  }
+
+  sortTaskReceive(event, ui) {
+    this.updateCatalogFromDOM(event.target);
+  }
+
+  updateCatalogFromDOM(node) {
+    const newCardEls = [...node.querySelectorAll('.card')];
+    const newCards = newCardEls.map((item, idx) => {
+      return new Task({
+        name: item.querySelector('.card_title').innerText,
+        description: item.querySelector('.card_description').innerText,
+        status: this.model.get('title'),
+        order: idx,
+      });
+    });
+    this.collection.reset(newCards);
+    this.render();
   }
 }
