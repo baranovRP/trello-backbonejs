@@ -31,6 +31,10 @@ export default class BoardView extends Backbone.View {
     ));
 
     this.addFormTemplate = _.template($('#add-form-template').html());
+    const self = this;
+    this.collection.forEach((catalog, idx) => {
+      self.listenTo(self.collection.at(idx).get('tasks'), 'all', this.disableBtns);
+    });
     this.render();
   }
 
@@ -57,6 +61,36 @@ export default class BoardView extends Backbone.View {
       })
     );
     this.$el.append(ul);
+    this.disableBtns();
+  }
+
+  disableBtns() {
+    const catalogEls = [...this.el.querySelectorAll('.catalog')];
+    const size = catalogEls.length;
+    catalogEls.forEach((catalog, idx)=> {
+      const taskEls = [...catalog.querySelectorAll('.card')];
+      taskEls.forEach(task => [...task.querySelectorAll('.btn')].forEach(i => i.disable = false));
+      if (taskEls[0]) {
+        taskEls[0].querySelector('.btn--up').disabled = true;
+      }
+      if (taskEls[taskEls.length - 1]) {
+        taskEls[taskEls.length - 1].querySelector('.btn--down').disabled = true;
+      }
+      if (idx === 0) {
+        taskEls.forEach(i => {
+          if (i) {
+            i.querySelector('.btn--left').disabled = true;
+          }
+        });
+      }
+      if (idx === (size - 1)) {
+        taskEls.forEach(i => {
+          if (i) {
+            i.querySelector('.btn--right').disabled = true;
+          }
+        });
+      }
+    });
   }
 
   createTask() {
