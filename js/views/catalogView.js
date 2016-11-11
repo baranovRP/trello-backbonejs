@@ -42,7 +42,7 @@ export default class CatalogView extends Backbone.View {
         return view.render().el;
       })
     );
-    $(this.el).sortable({
+    this.$el.sortable({
       placeholder: 'task-placeholder',
       connectWith: '.tasks',
       dropOnEmpty: true,
