@@ -2,11 +2,6 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-import jQuery from 'jquery';
-import sortable from 'jquery-ui-bundle';
-import _ from 'underscore';
-import Backbone from 'backbone';
-
 import Task from './models/task';
 import Catalog from './models/catalog';
 import Board from './models/board';
@@ -77,19 +72,3 @@ new BoardView({
   model: Board,
   el: document.querySelector('board'),
 });
-
-//
-//
-// const board = new Board({ catalogs });
-//
-// const myBoardView = new BoardView({
-//   model: board,
-//   el: document.querySelector('board'),
-// });
-
-// console.log(task1.toJSON());
-// console.log(task2.toJSON());
-// console.log(task3.toJSON());
-// console.log(task4.toJSON());
-// console.log(task5.toJSON());
-// console.log(task6.toJSON());
