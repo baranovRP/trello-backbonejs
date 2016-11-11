@@ -56,6 +56,7 @@
       padding: 0;
       margin: 0;
       list-style: none;
+      min-height: 1px;
     }
 
     .task {
@@ -168,19 +169,19 @@
 <body>
 <board></board>
 <script type="text/template" id="task-template">
-    <div class="card">
-      <h3 class="card_title"><%- name %></h3>
-      <div class="card_description"><%- description %></div>
-      <div class="card_state">
-        <span class="card_status"><%- status %></span>
-        <span class="card_order"><%- order %></span>
-      </div>
-      <button class="btn  btn--up">⇑</button>
-      <button class="btn  btn--right">⇒</button>
-      <button class="btn  btn--down">⇓</button>
-      <button class="btn  btn--left">⇐</button>
-      <button class="btn  btn--del">x</button>
+  <div class="card">
+    <h3 class="card_title"><%- name %></h3>
+    <div class="card_description"><%- description %></div>
+    <div class="card_state">
+      <span class="card_status"><%- status %></span>
+      <span class="card_order"><%- order %></span>
     </div>
+    <button class="btn  btn--up">⇑</button>
+    <button class="btn  btn--right">⇒</button>
+    <button class="btn  btn--down">⇓</button>
+    <button class="btn  btn--left">⇐</button>
+    <button class="btn  btn--del">x</button>
+  </div>
 </script>
 <script type="text/template" id="add-form-template">
   <div class="add-form">
