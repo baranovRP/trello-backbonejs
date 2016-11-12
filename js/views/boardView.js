@@ -25,9 +25,7 @@ export default class BoardView extends Backbone.View {
           moveTaskRight: 'moveTaskRight',
           moveTaskLeft: 'moveTaskLeft',
           'click .add-form_button': 'createTask',
-          sortremove: 'sortTaskRemove',
-          sortreceive: 'sortTaskReceive',
-          sortupdate: 'sortTaskUpdate',
+          disableBtns: 'disableBtns',
         },
       },
       options
@@ -138,32 +136,5 @@ export default class BoardView extends Backbone.View {
     taskModel.destroy();
     task.set({ status: nextCatalog.get('title') });
     nextCatalog.attributes.tasks.add(task);
-  }
-
-  sortTaskRemove(event, ui) {
-    this.updateCatalogFromDOM(event.target);
-  }
-
-  sortTaskReceive(event, ui) {
-    this.updateCatalogFromDOM(event.target);
-  }
-
-  sortTaskUpdate(event, ui) {
-    this.updateCatalogFromDOM(event.target);
-  }
-
-  updateCatalogFromDOM(node) {
-    const newCardEls = [...node.querySelectorAll('.card')];
-    const newCards = newCardEls.map((item, idx) => {
-      return new Task({
-        name: item.querySelector('.card_title').innerText,
-        description: item.querySelector('.card_description').innerText,
-        status: node.getAttribute('id'),
-        order: idx,
-      });
-    });
-    const catalog = this.collection.findWhere({ title: node.getAttribute('id') });
-    catalog.attributes.tasks.reset(newCards);
-    this.render();
   }
 }
